@@ -29,7 +29,7 @@ export default function App() {
     console.log(e.target.value);
    }
   function handleEditInputChange(e) {
-    setCurrentTodo({ ...currentTodo, text: e.target.value });
+    setCurrentTodo({ ...currentTodo, text: e.target.value,img:"" });
     console.log(currentTodo);
   }
 
@@ -42,6 +42,7 @@ export default function App() {
         {
           id: todos.length + 1,
           text: todo.trim(),
+          img:""
         }
       ]);
     }
@@ -64,7 +65,7 @@ export default function App() {
 
   function handleUpdateTodo(id, updatedTodo) {
     const updatedItem = todos.map((todo) => {
-      return todo.id === id ? updatedTodo : todo;
+      return todo.id === id ? updatedTodo : todo,todo.img === id ? updatedTodo : todo;
     });
      setIsEditing(false);
     setTodos(updatedItem);
@@ -139,7 +140,7 @@ export default function App() {
         {todos.map((todo) => (
           <li key={todo.id}>
             {todo.text}
-            
+            <img src={todo.img} />
             <button onClick={() => handleEditClick(todo)}>Edit</button>
             <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
           </li>
