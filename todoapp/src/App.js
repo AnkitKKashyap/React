@@ -11,7 +11,7 @@ export default function App() {
       return [];
     }
   });
-  const [todo, setTodo] = useState("");
+  const [todo,  setTodo, setimageFile] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
 
@@ -42,12 +42,13 @@ export default function App() {
         {
           id: todos.length + 1,
           text: todo.trim(),
-          img:""
+          img: "C:\fakepath\Mobile - Be Beautiful - HTML content 3.jpg"
         }
       ]);
     }
 
     setTodo("");
+   
   }
 
   function handleEditFormSubmit(e) {
@@ -92,7 +93,7 @@ export default function App() {
             value={currentTodo.text}
             onChange={handleEditInputChange}
           />
-           <select name="editTodoFile"   onSelect={typeSelect}>
+           <select name="editTodoFile"  onSelect={typeSelect}>
           <option value="mp3">MP3</option>
           <option value="img">IMAGE</option>
           <option value="vid">VIDEO</option>
@@ -101,6 +102,7 @@ export default function App() {
            type="file" 
            id="imageFile" 
            name='editimageFile' 
+           value={currentTodo.imageUpload}
            onChange={imageUpload} 
         />
           <button type="submit">Update</button>
@@ -119,14 +121,14 @@ export default function App() {
             value={todo}
             onChange={handleInputChange}
           /> 
-          <select name="TodoFile" onSelect={typeSelect}>
+          <select name="TodoFile"  onSelect={typeSelect}>
           <option value="mp3">MP3</option>
           <option value="img">IMAGE</option>
           <option value="vid">VIDEO</option>
         </select>
         <input
           type="file" 
-          id="imageFile" 
+          id="imageFile"
           name='imageFile' 
           onChange={imageUpload} 
         />
@@ -139,10 +141,11 @@ export default function App() {
       <ul className="todo-list">
         {todos.map((todo) => (
           <li key={todo.id}>
-            {todo.text}
-            <img src={todo.img} />
-            <button onClick={() => handleEditClick(todo)}>Edit</button>
+            <span > <img src={todo.img} />{todo.text}
+           </span>
+           <span style={{float:'right'}}> <button onClick={() => handleEditClick(todo)}>Edit</button>
             <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
+            </span>
           </li>
         ))}
       </ul>
