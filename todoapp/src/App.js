@@ -1,8 +1,8 @@
-import logo from './logo.svg';
 import { useEffect, useState } from "react";
 import "./App.css";
 
 export default function App() {
+  
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem("todos");
     if (savedTodos) {
@@ -22,7 +22,12 @@ export default function App() {
   function handleInputChange(e) {
     setTodo(e.target.value);
   }
-
+  function imageUpload(e) {
+   console.log(e.target.value);
+  }
+  function typeSelect(e) {
+    console.log(e.target.value);
+   }
   function handleEditInputChange(e) {
     setCurrentTodo({ ...currentTodo, text: e.target.value });
     console.log(currentTodo);
@@ -36,7 +41,7 @@ export default function App() {
         ...todos,
         {
           id: todos.length + 1,
-          text: todo.trim()
+          text: todo.trim(),
         }
       ]);
     }
@@ -86,6 +91,17 @@ export default function App() {
             value={currentTodo.text}
             onChange={handleEditInputChange}
           />
+           <select name="editTodoFile"   onSelect={typeSelect}>
+          <option value="mp3">MP3</option>
+          <option value="img">IMAGE</option>
+          <option value="vid">VIDEO</option>
+        </select>
+        <input
+           type="file" 
+           id="imageFile" 
+           name='editimageFile' 
+           onChange={imageUpload} 
+        />
           <button type="submit">Update</button>
           <button onClick={() => setIsEditing(false)}>Cancel</button>
         </form>
@@ -101,7 +117,20 @@ export default function App() {
             placeholder="Create a new todo"
             value={todo}
             onChange={handleInputChange}
-          />
+          /> 
+          <select name="TodoFile" onSelect={typeSelect}>
+          <option value="mp3">MP3</option>
+          <option value="img">IMAGE</option>
+          <option value="vid">VIDEO</option>
+        </select>
+        <input
+          type="file" 
+          id="imageFile" 
+          name='imageFile' 
+          onChange={imageUpload} 
+        />
+       
+
           <button type="submit">Add</button>
         </form>
       )}
@@ -110,6 +139,7 @@ export default function App() {
         {todos.map((todo) => (
           <li key={todo.id}>
             {todo.text}
+            
             <button onClick={() => handleEditClick(todo)}>Edit</button>
             <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
           </li>
