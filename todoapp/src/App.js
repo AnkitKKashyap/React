@@ -11,7 +11,8 @@ export default function App() {
       return [];
     }
   });
-  const [todo,  setTodo, setimageFile] = useState("");
+  
+  const [todo,  setTodo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
 
@@ -20,34 +21,35 @@ export default function App() {
   }, [todos]);
 
   function handleInputChange(e) {
-    setTodo(e.target.value);
+    // if(e.target.type !== 'file')
+     
+    // else{
+      
+    // }
+   // setTodo({...todo, [e.target.name]: e.target.value});
+    setTodo( e.target.value);
   }
-  function imageUpload(e) {
-   console.log(e.target.value);
-  }
-  function typeSelect(e) {
-    console.log(e.target.value);
-   }
+  
   function handleEditInputChange(e) {
-    setCurrentTodo({ ...currentTodo, text: e.target.value,img:"" });
+    setCurrentTodo({ ...currentTodo, text: e.target.value});
     console.log(currentTodo);
   }
 
   function handleFormSubmit(e) {
-    e.preventDefault();
-
-    if (todo !== "") {
+    // e.preventDefault();
+    if (todo !== "" ) {
       setTodos([
         ...todos,
         {
           id: todos.length + 1,
           text: todo.trim(),
-          img: "C:\fakepath\Mobile - Be Beautiful - HTML content 3.jpg"
+          file: "",
+          type: ""
         }
       ]);
     }
 
-    setTodo("");
+    setTodo({});
    
   }
 
@@ -66,7 +68,7 @@ export default function App() {
 
   function handleUpdateTodo(id, updatedTodo) {
     const updatedItem = todos.map((todo) => {
-      return todo.id === id ? updatedTodo : todo,todo.img === id ? updatedTodo : todo;
+      return todo.id === id ? updatedTodo : todo;
     });
      setIsEditing(false);
     setTodos(updatedItem);
@@ -93,7 +95,7 @@ export default function App() {
             value={currentTodo.text}
             onChange={handleEditInputChange}
           />
-           <select name="editTodoFile"  onSelect={typeSelect}>
+           <select name="editTodoFile"   onChange={handleEditInputChange}>
           <option value="mp3">MP3</option>
           <option value="img">IMAGE</option>
           <option value="vid">VIDEO</option>
@@ -103,7 +105,7 @@ export default function App() {
            id="imageFile" 
            name='editimageFile' 
            value={currentTodo.imageUpload}
-           onChange={imageUpload} 
+           onChange={handleEditInputChange} 
         />
           <button type="submit">Update</button>
           <button onClick={() => setIsEditing(false)}>Cancel</button>
@@ -118,10 +120,10 @@ export default function App() {
             name="todo"
             type="text"
             placeholder="Create a new todo"
-            value={todo}
+          
             onChange={handleInputChange}
           /> 
-          <select name="TodoFile"  onSelect={typeSelect}>
+          <select name="todofile"    onChange={handleInputChange}>
           <option value="mp3">MP3</option>
           <option value="img">IMAGE</option>
           <option value="vid">VIDEO</option>
@@ -130,7 +132,7 @@ export default function App() {
           type="file" 
           id="imageFile"
           name='imageFile' 
-          onChange={imageUpload} 
+          onChange={handleInputChange}
         />
        
 
@@ -141,7 +143,11 @@ export default function App() {
       <ul className="todo-list">
         {todos.map((todo) => (
           <li key={todo.id}>
-            <span > <img src={todo.img} />{todo.text}
+         <span >  
+         {todo.type === 'img' ? (<img alt="" src={todo.file} />):('')}
+           {todo.type === 'mp3' ? (<audio src={todo.file}></audio>):('')}
+           {todo.type === 'vid' ? (<video src={todo.file}></video>):('')}
+            {todo.text}
            </span>
            <span style={{float:'right'}}> <button onClick={() => handleEditClick(todo)}>Edit</button>
             <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
