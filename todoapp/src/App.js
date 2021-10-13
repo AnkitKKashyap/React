@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 export default function App() {
-  
-  const [todos, setTodos] = useState(() => {
+  const initialValues = {
+    todo: "",
+    todofile: "",
+    imageFile: "",
+   
+  };
+  const [todos, setTodos] = useState((initialValues) => {
     const savedTodos = localStorage.getItem("todos");
     if (savedTodos) {
       return JSON.parse(savedTodos);
@@ -12,9 +17,9 @@ export default function App() {
     }
   });
   
-  const [todo,  setTodo] = useState({});
+  const [todo,  setTodo] = useState(initialValues);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentTodo, setCurrentTodo] = useState({});
+  const [currentTodo, setCurrentTodo] = useState();
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -26,25 +31,28 @@ export default function App() {
     // else{
       
     // }
-   // setTodo({...todo, [e.target.name]: e.target.value});
-    setTodo( e.target.value);
+    setTodo({...todo, [e.target.name]: e.target.value});
+    //setTodo( e.target.value);
   }
   
   function handleEditInputChange(e) {
-    setCurrentTodo({ ...currentTodo, text: e.target.value});
+    //setCurrentTodo({ ...currentTodo, text: e.target.value});
+    setCurrentTodo({ ...currentTodo, [e.target.name]: e.target.value});
     console.log(currentTodo);
   }
 
   function handleFormSubmit(e) {
-    // e.preventDefault();
+     e.preventDefault();
+    // const { name, value } = e.target;
+  //  console.log([e.target.value]);
     if (todo !== "" ) {
       setTodos([
         ...todos,
         {
           id: todos.length + 1,
-          text: todo.trim(),
-          file: "",
-          type: ""
+          text: todo.todo,
+           file: todo.imageFile,
+           type: todo.todofile
         }
       ]);
     }
@@ -120,10 +128,11 @@ export default function App() {
             name="todo"
             type="text"
             placeholder="Create a new todo"
-          
+            value={todo.todo}
             onChange={handleInputChange}
           /> 
-          <select name="todofile"    onChange={handleInputChange}>
+          <select name="todofile"    value={todo.todofile}  onChange={handleInputChange}>
+          <option value="">Select</option>
           <option value="mp3">MP3</option>
           <option value="img">IMAGE</option>
           <option value="vid">VIDEO</option>
@@ -132,6 +141,7 @@ export default function App() {
           type="file" 
           id="imageFile"
           name='imageFile' 
+          value={todo.imageFile}
           onChange={handleInputChange}
         />
        
@@ -144,9 +154,9 @@ export default function App() {
         {todos.map((todo) => (
           <li key={todo.id}>
          <span >  
-         {todo.type === 'img' ? (<img alt="" src={todo.file} />):('')}
-           {todo.type === 'mp3' ? (<audio src={todo.file}></audio>):('')}
-           {todo.type === 'vid' ? (<video src={todo.file}></video>):('')}
+         {todo.type === 'img' ? (<img style={{width: '60px'}} alt="" src={todo.file} />):('')}
+           {todo.type === 'mp3' ? (<audio style={{width: '60px'}} src={todo.file}></audio>):('')}
+           {todo.type === 'vid' ? (<video style={{width: '60px'}} src={todo.file}></video>):('')}
             {todo.text}
            </span>
            <span style={{float:'right'}}> <button onClick={() => handleEditClick(todo)}>Edit</button>
